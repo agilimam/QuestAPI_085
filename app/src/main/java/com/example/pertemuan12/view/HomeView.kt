@@ -49,6 +49,39 @@ object DestinasiHome: DestinasiNavigasi{
     override val titleRes = "Home mhs"
 }
 
+@Composable
+fun HomeStatus(
+    homeUiState: HomeUiState,
+    retryAction : () -> Unit,
+    modifier: Modifier = Modifier,
+    onDeleteClick:(Mahasiswa) -> Unit = {},
+    onDetilClick:(String) -> Unit
+){
+    when(homeUiState) {
+        is HomeUiState.Loading -> Onloading(modifier = modifier.fillMaxSize())
+
+
+        is HomeUiState.Succes ->
+            if (homeUiState.mahasiswa.isEmpty()){
+                return Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center)
+                {
+                    Text(text = "Tidak ada data Kontak" )
+
+                }
+            }else {
+                MhsLayout(
+
+
+                    mahasiswa = homeUiState.mahasiswa, modifier = modifier.fillMaxWidth(), onDetailClick = {
+                        onDetilClick(it.nim)
+                    },
+                    onDeleteClick = { onDeleteClick(it)
+                    }
+                )
+            }
+        is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+    }
+}
 
 @Composable
 fun Onloading(modifier: Modifier =Modifier){
