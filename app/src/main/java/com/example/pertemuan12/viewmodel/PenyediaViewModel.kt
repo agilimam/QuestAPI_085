@@ -1,6 +1,6 @@
 package com.example.pertemuan12.viewmodel
 
-import android.text.Editable.Factory
+
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
@@ -10,8 +10,8 @@ import com.example.pertemuan12.MahasiswaApplications
 object PenyediaViewModel {
     val Factory = viewModelFactory {
         run {
-            initializer { HomeViewModel(aplikasiMahasiswa().container.kontakRepository) }
-            initializer { InsertViewModel(aplikasiMahasiswa().container.kontakRepository) }
+            initializer { HomeViewModel(aplikasiMahasiswa().container.mahasiswaRepository) }
+            initializer { InsertViewModel(aplikasiMahasiswa().container.mahasiswaRepository) }
         }
     }
 }
