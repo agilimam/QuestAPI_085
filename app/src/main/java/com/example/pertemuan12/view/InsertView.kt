@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -22,6 +24,7 @@ import com.example.pertemuan12.viewmodel.InsertUiEvent
 import com.example.pertemuan12.viewmodel.InsertUiState
 import com.example.pertemuan12.viewmodel.InsertViewModel
 import com.example.pertemuan12.viewmodel.PenyediaViewModel
+import kotlinx.coroutines.launch
 
 object DestinasiEntry : DestinasiNavigasi{
     override val route = "item_entry"
@@ -50,8 +53,20 @@ fun EntryMhsScreen(
             )
         }
     ){ innerPadding ->
-
-
+        EntryBody(
+            insertUiState = viewModel.uiState,
+            onSiswaValueChange = viewModel::updateInsertMhsState,
+            onSaveClick = {
+                coroutineScope.launch {
+                    viewModel.insertMhs()
+                    navigateBack()
+                }
+            },
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+        )
 
     }
 
