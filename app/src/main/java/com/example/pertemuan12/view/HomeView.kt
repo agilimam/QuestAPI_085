@@ -50,6 +50,56 @@ object DestinasiHome: DestinasiNavigasi{
 }
 
 
+@Composable
+fun Onloading(modifier: Modifier =Modifier){
+    Image(
+        modifier = modifier.size(200.dp),
+        painter = painterResource(R.drawable.loadingimg),
+        contentDescription = stringResource(R.string.loading)
+    )
+}
+
+@Composable
+fun OnError(retryAction: () -> Unit,
+            modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.eror), contentDescription = ""
+        )
+        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
+        Button(onClick = retryAction) {
+            Text(stringResource(R.string.retry))
+        }
+    }
+}
+
+@Composable fun MhsLayout(
+    mahasiswa: List<Mahasiswa>,
+    modifier: Modifier = Modifier,
+    onDetailClick: (Mahasiswa) -> Unit,
+    onDeleteClick: (Mahasiswa) -> Unit = {}
+) {
+    LazyColumn( modifier = modifier,
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(mahasiswa) { mahasiswa ->
+            MhsCard(
+                mahasiswa = mahasiswa,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onDetailClick(mahasiswa) }, onDeleteClick = {
+                    onDeleteClick(mahasiswa)
+                }
+            )
+        }
+    }
+}
+
 @Composable fun MhsCard(
     mahasiswa: Mahasiswa,
     modifier: Modifier = Modifier,
