@@ -13,7 +13,7 @@ interface AppContainer {
 }
 
 class MahasiswaContainer : AppContainer{
-    private val baseUrl ="http://192.168.1.9:8000/umyTI/"
+    private val baseUrl ="http://192.168.1.9:80/umyTI/"
     private val json = Json { ignoreUnknownKeys = true }
     private val retrofit:Retrofit = Retrofit.Builder()
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
