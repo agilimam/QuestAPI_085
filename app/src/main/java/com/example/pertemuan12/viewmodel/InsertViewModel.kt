@@ -1,5 +1,6 @@
 package com.example.pertemuan12.viewmodel
 
+import android.provider.ContactsContract.Intents.Insert
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,6 +30,10 @@ class InsertViewModel (
         }
     }
 }
+
+fun Mahasiswa.toUiStateMhs(): InsertUiState = InsertUiState(
+    insertUiEvent = toInsertUiEvent()
+)
 
 fun Mahasiswa.toInsertUiEvent():InsertUiEvent = InsertUiEvent(
     nim = nim,
