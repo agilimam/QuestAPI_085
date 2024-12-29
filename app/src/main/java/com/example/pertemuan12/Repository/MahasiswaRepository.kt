@@ -4,7 +4,6 @@ package com.example.pertemuan12.Repository
 
 import com.example.pertemuan12.Mahasiswa.Mahasiswa
 import com.example.pertemuan12.Service.MahasiswaService
-import retrofit2.Response
 import java.io.IOException
 
 interface MahasiswaRepository {
