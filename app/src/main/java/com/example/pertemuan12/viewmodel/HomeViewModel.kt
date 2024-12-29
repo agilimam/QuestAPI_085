@@ -9,6 +9,7 @@ import coil.network.HttpException
 import com.example.pertemuan12.Mahasiswa.Mahasiswa
 import com.example.pertemuan12.Repository.MahasiswaRepository
 import kotlinx.coroutines.launch
+import okio.IOException
 
 sealed class HomeUiState{
     data class Succes(val mahasiswa : List<Mahasiswa>) : HomeUiState()
@@ -34,6 +35,18 @@ class HomeViewModel (
             } catch (e:Exception){
                 HomeUiState.Error
             } catch (e:HttpException){
+                HomeUiState.Error
+            }
+        }
+    }
+
+    fun deleteMhs(nim:String){
+        viewModelScope.launch {
+            try {
+                mhs.deleteMahasiswa(nim)
+            }catch (e:IOException){
+                HomeUiState.Error
+            }catch (e:HttpException){
                 HomeUiState.Error
             }
         }
