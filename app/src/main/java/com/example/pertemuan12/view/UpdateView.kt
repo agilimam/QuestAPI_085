@@ -55,7 +55,7 @@ fun UpdateScreen(
                     viewModel.updateMhs()
                     delay(600)
                     withContext(Dispatchers.Main){
-                        onNavigate
+                        onNavigate()
                     }
                 }
             }
