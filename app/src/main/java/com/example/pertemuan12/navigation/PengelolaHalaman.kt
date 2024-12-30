@@ -15,6 +15,7 @@ import com.example.pertemuan12.view.DestinasiUpdate
 import com.example.pertemuan12.view.DetailScreen
 import com.example.pertemuan12.view.EntryMhsScreen
 import com.example.pertemuan12.view.HomeScreen
+import com.example.pertemuan12.view.UpdateScreen
 
 
 @Composable
@@ -66,6 +67,22 @@ fun PengelolaHalaman(
                             }
                         }
                     }
+                )
+            }
+        }
+        composable(
+            DestinasiUpdate.routesWithArg,
+            arguments = listOf(
+                navArgument(DestinasiUpdate.NIM) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val nim = it.arguments?.getString(DestinasiUpdate.NIM)
+            nim?.let { nim ->
+                UpdateScreen(
+                    onBack = {navController.popBackStack()},
+                    onNavigate = {navController.popBackStack()}
                 )
             }
         }
