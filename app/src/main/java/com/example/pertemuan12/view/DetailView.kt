@@ -1,6 +1,8 @@
 package com.example.pertemuan12.view
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -16,12 +18,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pertemuan12.Mahasiswa.Mahasiswa
 import com.example.pertemuan12.navigation.DestinasiNavigasi
+import com.example.pertemuan12.viewmodel.DetailUiState
 
 object DestinasiDetail: DestinasiNavigasi{
     override val route = "detail"
     override val titleRes ="Detail Mhs"
     const val Nim = "nim"
     val routesWithArg = "$route/{${Nim}im}"
+}
+
+@Composable
+fun DetailStatus(
+    retryAction:() -> Unit,
+    modifier: Modifier =Modifier,
+    detailUiState: DetailUiState
+) {
+    when(detailUiState){
+        is DetailUiState.Loading -> Onloading(modifier = modifier.fillMaxSize())
+
+        is DetailUiState.Succes -> {
+            if (detailUiState.mahasiswa.nim.isEmpty()){
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text("Data tidak ditemukan")
+                }
+            } else {
+                itemDetailMhs(
+                    mahasiswa = detailUiState.mahasiswa,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+        }
+        is DetailUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+    }
+
 }
 
 @Composable
