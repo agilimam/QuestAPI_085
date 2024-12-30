@@ -2,11 +2,14 @@ package com.example.pertemuan12.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,20 +35,20 @@ import com.example.pertemuan12.viewmodel.PenyediaViewModel
 
 object DestinasiDetail: DestinasiNavigasi{
     override val route = "detail"
-    override val titleRes ="Detail Mhs"
-    const val Nim = "nim"
-    val routesWithArg = "$route/{${Nim}im}"
+    override val titleRes = "Detail Mhs"
+    const val NIM = "nim"
+    val routesWithArg = "$route/{$NIM}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailUi(
+fun DetailScreen(
     navigateBack: () -> Unit,
-    navigateToitemUpdate: ()->Unit,
-    modifier: Modifier =Modifier,
+    navigateToItemUpdate: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: DetailViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
-    Scaffold (
+    Scaffold(
         topBar = {
             CostumTopAppBar(
                 title = DestinasiDetail.titleRes,
@@ -58,95 +61,91 @@ fun DetailUi(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateToitemUpdate,
+                onClick = navigateToItemUpdate,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(18.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Mahasiswa"
+                    contentDescription = "Edit Kontak"
                 )
             }
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         DetailStatus(
             modifier = Modifier.padding(innerPadding),
             detailUiState = viewModel.mahasiswaDetailState,
-            retryAction = {viewModel.getMahasiswabyNim() }
+            retryAction = { viewModel.getMahasiswabyNim() }
         )
     }
 }
 
 @Composable
 fun DetailStatus(
-    retryAction:() -> Unit,
-    modifier: Modifier =Modifier,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier,
     detailUiState: DetailUiState
 ) {
-    when(detailUiState){
+    when (detailUiState) {
         is DetailUiState.Loading -> Onloading(modifier = modifier.fillMaxSize())
 
-        is DetailUiState.Succes -> {
-            if (detailUiState.mahasiswa.nim.isEmpty()){
+        is DetailUiState.Success -> {
+            if (detailUiState.mahasiswa.nim.isEmpty()) {
                 Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
-                ){
-                    Text("Data tidak ditemukan")
+                ) {
+                    Text("Data tidak ditemukan.")
                 }
             } else {
-                itemDetailMhs(
+                ItemDetailMhs(
                     mahasiswa = detailUiState.mahasiswa,
                     modifier = modifier.fillMaxWidth()
                 )
             }
         }
+
         is DetailUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
     }
-
 }
 
 @Composable
-fun itemDetailMhs(
+fun ItemDetailMhs(
     modifier: Modifier = Modifier,
     mahasiswa: Mahasiswa
-){
-    Card (
+) {
+    Card(
         modifier = modifier.padding(16.dp),
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp)
-
-    ){
-        Column (
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
+        Column(
             modifier = Modifier.padding(16.dp)
-        ){
-            DetailMhs(judul = "NIM", isinya = mahasiswa.nim)
-            DetailMhs(judul = "NAMA", isinya = mahasiswa.nama)
-            DetailMhs(judul = "JenisKelamin", isinya = mahasiswa.jenisKelamin)
-            DetailMhs(judul = "Alamat", isinya = mahasiswa.alamat)
-            DetailMhs(judul = "Kelas", isinya = mahasiswa.kelas)
-            DetailMhs(judul = "Angkatan", isinya = mahasiswa.angkatan)
+        ) {
+            ComponentDetailMhs(judul = "NIM", isinya = mahasiswa.nim)
+            ComponentDetailMhs(judul = "Nama", isinya = mahasiswa.nama)
+            ComponentDetailMhs(judul = "Alamat", isinya = mahasiswa.alamat)
+            ComponentDetailMhs(judul = "Jenis Kelamin", isinya = mahasiswa.jenisKelamin)
+            ComponentDetailMhs(judul = "Kelas", isinya = mahasiswa.kelas)
+            ComponentDetailMhs(judul = "Angkatan", isinya = mahasiswa.angkatan)
         }
-
     }
-
 }
 
 @Composable
-fun DetailMhs(
-    modifier: Modifier = Modifier,
-    judul : String,
-    isinya : String,
+fun ComponentDetailMhs(
+    modifier: Modifier =Modifier,
+    judul: String,
+    isinya: String,
 ){
-    Column (
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
-    ){
+    Column(modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start)
+    {
         Text(
             text = "$judul : ",
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            fontSize = 18.sp,
-            color = Color.Black
+            color = Color.Gray
         )
         Text(
             text = isinya,
@@ -154,5 +153,4 @@ fun DetailMhs(
             fontWeight = FontWeight.Bold
         )
     }
-
 }
